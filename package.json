@@ -1,0 +1,140 @@
+{
+  "name": "react-native-otp-fields",
+  "version": "0.1.0",
+  "description": "Lightweight and customizable OTP input for React Native.",
+  "source": "./src/index.js",
+  "main": "./lib/commonjs/index.js",
+  "module": "./lib/module/index.js",
+  "react-native": "./src/index.js",
+  "types": "./types/index.d.ts",
+  "exports": {
+    ".": {
+      "react-native": "./src/index.js",
+      "import": "./lib/module/index.js",
+      "require": "./lib/commonjs/index.js",
+      "types": "./types/index.d.ts"
+    }
+  },
+  "files": [
+    "lib",
+    "types",
+    "src/index.js",
+    "src/OTPInput.js",
+    "src/utils.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "bob build",
+    "prepublishOnly": "npm run build && npm test",
+    "clean": "del-cli lib",
+    "lint": "eslint \"src/**/*.{js,jsx}\"",
+    "test": "jest"
+  },
+  "keywords": [
+    "react-native",
+    "otp",
+    "pin-input",
+    "verification-code",
+    "sms-code",
+    "one-time-password"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/react-native-otp-fields.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-native": ">=0.74.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/eslint-parser": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.26.0",
+    "babel-jest": "^29.7.0",
+    "del-cli": "^6.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.37.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "jest": "^29.7.0",
+    "react": "18.3.1",
+    "react-native": "0.76.5",
+    "react-native-builder-bob": "^0.40.18"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "commonjs",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ]
+    ]
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended",
+      "plugin:react-hooks/recommended"
+    ],
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+      "ecmaVersion": 2022,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      },
+      "requireConfigFile": false,
+      "babelOptions": {
+        "presets": [
+          "@babel/preset-react"
+        ]
+      }
+    },
+    "env": {
+      "es2022": true,
+      "node": true,
+      "jest": true
+    },
+    "globals": {
+      "requestAnimationFrame": "readonly",
+      "cancelAnimationFrame": "readonly"
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
+    },
+    "rules": {
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off"
+    }
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "watchman": false,
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/lib/"
+    ]
+  }
+}
