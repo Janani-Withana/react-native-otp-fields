@@ -1,5 +1,5 @@
 {
-  "name": "react-native-otp-fields",
+  "name": "@codehogs/react-native-otp-fields",
   "version": "0.1.0",
   "description": "Lightweight and customizable OTP input for React Native.",
   "source": "./src/index.js",
@@ -45,7 +45,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-username/react-native-otp-fields.git"
+    "url": "git+https://github.com/codehogs/react-native-otp-fields.git"
   },
   "author": "",
   "license": "MIT",

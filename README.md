@@ -1,4 +1,4 @@
-# react-native-otp-fields
+# @codehogs/react-native-otp-fields
 
 **Lightweight and customizable OTP input for React Native.**
 
@@ -12,11 +12,11 @@ Fixed-length OTP cells with auto-advance, backspace navigation, paste support, c
 ## Installation
 
 ```bash
-npm install react-native-otp-fields
+npm install @codehogs/react-native-otp-fields
 ```
 
 ```bash
-yarn add react-native-otp-fields
+yarn add @codehogs/react-native-otp-fields
 ```
 
 ## Quick start
@@ -24,7 +24,7 @@ yarn add react-native-otp-fields
 ```jsx
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { OTPInput } from 'react-native-otp-fields';
+import { OTPInput } from '@codehogs/react-native-otp-fields';
 
 export default function App() {
   const [otp, setOtp] = useState('');
@@ -108,7 +108,7 @@ Link into an app:
 
 ```bash
 npm pack
-# In your app: npm install /path/to/react-native-otp-fields-0.1.0.tgz
+# In your app: npm install /path/to/codehogs-react-native-otp-fields-0.1.0.tgz
 ```
 
 Or use `yarn link` / `npm link` per your workflow.
@@ -117,7 +117,7 @@ Or use `yarn link` / `npm link` per your workflow.
 
 1. Bump `version` in `package.json`.
 2. `npm run build`
-3. `npm publish` (after `npm login`).
+3. `npm publish --access public` (after `npm login`; scoped packages need `--access public` for a free public package).
 
 Ensure `files` in `package.json` only ships `src`, `lib`, `types`, `README.md`, and `LICENSE`.
 
