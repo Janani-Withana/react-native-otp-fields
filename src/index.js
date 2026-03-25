@@ -1,2 +1,6 @@
 export { OTPInput } from './OTPInput';
-export { clampOtpValue } from './utils';
+export {
+  clampOtpValue,
+  normalizeStoredOtpValue,
+  sanitizeOtpInput,
+} from './utils';

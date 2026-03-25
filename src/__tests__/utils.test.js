@@ -1,4 +1,4 @@
-import { clampOtpValue } from '../utils';
+import { clampOtpValue, sanitizeOtpInput } from '../utils';
 
 describe('clampOtpValue', () => {
   it('strips whitespace and truncates', () => {
@@ -8,5 +8,15 @@ describe('clampOtpValue', () => {
 
   it('handles non-strings', () => {
     expect(clampOtpValue(/** @type {any} */ (null), 6)).toBe('');
+  });
+});
+
+describe('sanitizeOtpInput', () => {
+  it('applies pasteTransformer and digitsOnly', () => {
+    const out = sanitizeOtpInput('12-34-56', 6, {
+      digitsOnly: true,
+      pasteTransformer: (t) => t.replace(/-/g, ''),
+    });
+    expect(out).toBe('123456');
   });
 });

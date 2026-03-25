@@ -2,7 +2,7 @@
 
 **Lightweight and customizable OTP input for React Native.**
 
-Fixed-length OTP cells with auto-advance, backspace navigation, paste support, controlled and uncontrolled usage, optional masking, error styling, and a completion callback. No native modules—pure JavaScript on top of React Native `TextInput`.
+Fixed-length OTP cells with auto-advance, backspace navigation, paste support, controlled and uncontrolled usage, optional masking, error styling, semantic color/size tokens (so you rarely fight `StyleSheet`), optional **group separators** (like a 3+3 layout), **`pasteTransformer`** (same idea as [input-otp](https://github.com/guilhermerodz/input-otp)), optional **digits-only** filtering, an imperative **ref** API (`focus` / `blur` / `clear` / `getValue`), and a completion callback. No native modules—pure JavaScript on top of React Native `TextInput`.
 
 ## Requirements
 
@@ -48,24 +48,57 @@ export default function App() {
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-| `length` | `number` | `6` | Number of OTP digits. |
-| `value` | `string` | — | Controlled value (digits only; whitespace is ignored). |
+| `length` | `number` | `6` | Number of OTP characters. |
+| `value` | `string` | — | Controlled value (whitespace stripped; if `digitsOnly`, non-digits stripped). |
 | `defaultValue` | `string` | `''` | Initial value when uncontrolled. |
 | `onChangeText` | `(value: string) => void` | — | Called whenever the combined code changes. |
-| `onComplete` | `(value: string) => void` | — | Called once when `value` reaches `length`. Not fired again until the code changes and is completed again. |
+| `onComplete` | `(value: string) => void` | — | Called when `value` first reaches `length`; can fire again after edits and a new completion. |
 | `autoFocus` | `boolean` | `false` | Focus the first cell on mount. |
 | `editable` | `boolean` | `true` | Disables all cells when `false`. |
 | `secureTextEntry` | `boolean` | `false` | Mask digits (PIN-style). |
-| `keyboardType` | `TextInput` keyboard type | `'number-pad'` | Often `'number-pad'` or `'numeric'`. |
+| `keyboardType` | `TextInput` keyboard type | `'number-pad'` | e.g. `'number-pad'` or `'numeric'`. |
 | `placeholder` | `string` | `''` | Placeholder per cell. |
-| `hasError` | `boolean` | `false` | Applies error cell styles. |
+| `hasError` | `boolean` | `false` | Applies error border (and `errorCellStyle`). |
 | `testID` | `string` | — | Container `testID`; cells use `${testID}-cell-${index}`. |
+| `digitsOnly` | `boolean` | `false` | Strip non-digits from input and from `value` / `defaultValue` when displaying. |
+| `pasteTransformer` | `(pasted: string) => string` | — | Applied on **paste** (multi-character input). Example: `(t) => t.replace(/-/g, '')`. |
+| `splitAfterIndexes` | `number[]` | — | e.g. `[2]` inserts a separator **after** the 3rd cell (indices are 0-based cell indexes). |
+| `separator` | `ReactNode` | — | Custom node for each gap; default is a small rounded bar. Pass `null` and use `renderSeparator` to hide, or override. |
+| `renderSeparator` | `({ afterIndex }) => ReactNode` | — | Full control per gap. |
+| `separatorContainerStyle` | `ViewStyle` | — | Wrapper around the separator. |
+| `separatorStyle` | `ViewStyle` | — | Extra styles for the **default** pill separator. |
+| `separatorWidth` / `separatorHeight` / `separatorColor` | `number` / `string` | `12` / `4` / `#D0D5DD` | Default separator appearance. |
+| `gap` | `number` | `8` | Space between cells (and around separators). |
+| `cellWidth` / `cellHeight` | `number` | `48` / `56` | Cell size. |
+| `borderRadius` / `borderWidth` | `number` | `12` / `1` | Cell shape. |
+| `borderColor` | `string` | `#D0D5DD` | Default cell border. |
+| `backgroundColor` | `string` | — | Cell background (optional). |
+| `textColor` | `string` | `#101828` | Character color. |
+| `placeholderTextColor` | `string` | `#999` | Placeholder color. |
+| `focusedBorderColor` / `focusedBackgroundColor` | `string` | `#101828` / — | Focused cell. |
+| `filledBorderColor` / `filledBackgroundColor` | `string` | — | When a cell has a character. |
+| `errorBorderColor` | `string` | `#F04438` | When `hasError`. |
+| `fontSize` / `fontFamily` | `number` / `string` | `20` / — | Typography shortcuts (still override with `textStyle`). |
+| `caretHidden` | `boolean` | `false` | Passed through to each `TextInput`. |
 
-**Style props** (all optional): `containerStyle`, `cellStyle`, `focusedCellStyle`, `filledCellStyle`, `errorCellStyle`, `textStyle`.
+**Override props** (merged after tokens): `containerStyle`, `cellStyle`, `focusedCellStyle`, `filledCellStyle`, `errorCellStyle`, `textStyle`.
+
+### Ref (`forwardRef`)
+
+Pass a ref to call:
+
+| Method | Description |
+|--------|-------------|
+| `focus(index?)` | Focus cell `index` (default `0`). |
+| `blur()` | Blur all cells. |
+| `clear()` | Clears value (calls `onChangeText('')` in controlled mode; also resets completion tracking). |
+| `getValue()` | Returns the current combined string. |
 
 ### Utilities
 
-- **`clampOtpValue(text, length)`** — Strips whitespace and truncates to `length`. Exported for tests or custom flows.
+- **`clampOtpValue(text, length)`** — Strips whitespace and truncates.
+- **`sanitizeOtpInput(text, length, options?)`** — Whitespace strip, optional `digitsOnly`, optional `pasteTransformer`, then truncate.
+- **`normalizeStoredOtpValue(text, length, digitsOnly?)`** — For normalizing controlled `value` / `defaultValue`.
 
 ## Behavior
 
@@ -77,9 +110,20 @@ export default function App() {
 
 ## Styling and layout
 
-Default cells are **48×56** with horizontal spacing (`gap: 8`). The container uses `flexDirection: 'row'` and `justifyContent: 'space-between'`. Override with `containerStyle` / `cellStyle` for different sizes, spacing, or centered groups (e.g. wrap in a `View` with `alignItems: 'center'` and adjust `containerStyle`).
+Prefer **semantic props** (`gap`, `cellWidth`, `cellHeight`, `borderColor`, `textColor`, `focusedBorderColor`, `errorBorderColor`, …) for a design system–friendly setup; use `cellStyle` / `textStyle` when you need full control.
 
-For small screens, reduce `cell` width or use fewer digits; the component does not assume a fixed screen width.
+**Grouped layout (e.g. 3 + 3):**
+
+```jsx
+<OTPInput
+  length={6}
+  splitAfterIndexes={[2]}
+  gap={10}
+  cellWidth={44}
+/>
+```
+
+Default cells are **48×56** with **`gap: 8`**. The row uses `alignItems: 'center'` so separators line up with cells.
 
 ## Controlled vs uncontrolled
 
@@ -108,7 +152,7 @@ Link into an app:
 
 ```bash
 npm pack
-# In your app: npm install /path/to/codehogs-react-native-otp-fields-0.1.1.tgz
+# In your app: npm install /path/to/codehogs-react-native-otp-fields-0.2.0.tgz
 ```
 
 Or use `yarn link` / `npm link` per your workflow.

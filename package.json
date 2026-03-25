@@ -1,6 +1,6 @@
 {
   "name": "@codehogs/react-native-otp-fields",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Lightweight and customizable OTP input for React Native.",
   "source": "./src/index.js",
   "main": "./lib/commonjs/index.js",
