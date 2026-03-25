@@ -43,9 +43,13 @@
   "publishConfig": {
     "access": "public"
   },
+  "homepage": "https://github.com/Janani-Withana/react-native-otp-fields#readme",
+  "bugs": {
+    "url": "https://github.com/Janani-Withana/react-native-otp-fields/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codehogs/react-native-otp-fields.git"
+    "url": "git+https://github.com/Janani-Withana/react-native-otp-fields.git"
   },
   "author": "",
   "license": "MIT",
