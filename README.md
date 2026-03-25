@@ -108,7 +108,7 @@ Link into an app:
 
 ```bash
 npm pack
-# In your app: npm install /path/to/codehogs-react-native-otp-fields-0.1.0.tgz
+# In your app: npm install /path/to/codehogs-react-native-otp-fields-0.1.1.tgz
 ```
 
 Or use `yarn link` / `npm link` per your workflow.
