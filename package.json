@@ -21,6 +21,7 @@
     "src/index.js",
     "src/OTPInput.js",
     "src/utils.js",
+    "src/assets",
     "README.md",
     "LICENSE"
   ],
